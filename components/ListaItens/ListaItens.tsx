@@ -1,9 +1,10 @@
-import { CircleCheckBig, CircleDashed, Trash2 } from "lucide-react";
+import { CircleCheckBig, CircleDashed } from "lucide-react";
 import { FlatList, Text, TouchableOpacity, View } from "react-native";
 import { styles } from "./styles";
 import { useState } from "react";
 import { ProdutoItem } from "../../interfaces/ProdutoItem";
 import ProdutoListaItem from "../ProdutoListaItem/ProdutoListaItem";
+import { colors } from "../colors";
 
 export const DATA: ProdutoItem[] = [
   {
@@ -31,21 +32,12 @@ export const DATA: ProdutoItem[] = [
     nome: "Açúcar Refinado",
     comprado: false,
   },
-  {
-    id: "4",
-    nome: "Óleo de Soja",
-    comprado: false,
-  },
-  {
-    id: "5",
-    nome: "Açúcar Refinado",
-    comprado: false,
-  },
 ];
 
 export default function ListaItens() {
   const [active, setActive] = useState("presentes");
 
+  // TODO(aluno): usar este estado para guardar a lista real de produtos (iniciando a partir de DATA ou de dados persistidos em AsyncStorage) e passar funções de adicionar/remover/alternar-comprado para Form e ProdutoListaItem.
   const [produtos, setProdutos] = useState<ProdutoItem[]>([]);
 
   function alterarActiveParaPresentes() {
@@ -64,8 +56,14 @@ export default function ListaItens() {
           style={styles.buttonTopBar}
           onPress={alterarActiveParaPresentes}
         >
-          <CircleDashed color={active === "presentes" ? "#007bff" : "#777"} />
-          <Text style={{ color: active === "presentes" ? "#007bff" : "#777" }}>
+          <CircleDashed
+            color={active === "presentes" ? colors.azul500 : colors.textSecondary}
+          />
+          <Text
+            style={{
+              color: active === "presentes" ? colors.azul500 : colors.textSecondary,
+            }}
+          >
             Presentes
           </Text>
         </TouchableOpacity>
@@ -74,17 +72,32 @@ export default function ListaItens() {
           style={styles.buttonTopBar}
           onPress={alterarActiveParaComprados}
         >
-          <CircleCheckBig color={active === "comprados" ? "#007bff" : "#777"} />
-          <Text style={{ color: active === "comprados" ? "#007bff" : "#777" }}>
+          <CircleCheckBig
+            color={active === "comprados" ? colors.azul500 : colors.textSecondary}
+          />
+          <Text
+            style={{
+              color: active === "comprados" ? colors.azul500 : colors.textSecondary,
+            }}
+          >
             Comprados
           </Text>
         </TouchableOpacity>
-        <Text style={{ marginLeft: "auto", color: "#777" }}>Limpar</Text>
+
+        <TouchableOpacity
+          style={{ marginLeft: "auto" }}
+          onPress={() => {}}
+          // TODO(aluno): implementar a ação de "Limpar" (ex.: remover os itens marcados como comprados, atualizando o estado da lista).
+        >
+          <Text style={{ color: colors.textSecondary }}>Limpar</Text>
+        </TouchableOpacity>
       </View>
 
-      {/* Lista de itens*/}
+      {/* Lista de itens */}
+      {/* TODO(aluno): filtrar DATA/produtos de acordo com "active" (produto.comprado === false para "presentes", === true para "comprados") antes de passar para a FlatList. */}
       <FlatList<ProdutoItem>
         data={DATA}
+        keyExtractor={(item) => item.id}
         showsVerticalScrollIndicator={false}
         renderItem={(linha) => <ProdutoListaItem produto={linha.item} />}
       />
