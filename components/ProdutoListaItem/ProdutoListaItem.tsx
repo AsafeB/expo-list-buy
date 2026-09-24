@@ -6,18 +6,28 @@ import { colors } from "../colors";
 
 interface Props {
   produto: ProdutoItem;
+  aoAlternarComprado: (id: string) => void;
+  aoRemover: (id: string) => void;
 }
 
-export default function ProdutoListaItem({ produto }: Props) {
+export default function ProdutoListaItem({
+  produto,
+  aoAlternarComprado,
+  aoRemover,
+}: Props) {
   const comprado = produto.comprado;
+
+  function tocarNoProduto() {
+    aoAlternarComprado(produto.id);
+  }
+
+  function tocarNaLixeira() {
+    aoRemover(produto.id);
+  }
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        style={styles.nameRow}
-        onPress={() => {}}
-        // TODO(aluno): alternar produto.comprado ao tocar aqui (ex.: recebendo uma função via props que atualiza o estado da lista em ListaItens/App).
-      >
+      <TouchableOpacity style={styles.nameRow} onPress={tocarNoProduto}>
         {comprado ? (
           <CircleCheckBig color={colors.azul500} size={20} />
         ) : (
@@ -28,10 +38,7 @@ export default function ProdutoListaItem({ produto }: Props) {
         </Text>
       </TouchableOpacity>
 
-      <TouchableOpacity
-        onPress={() => {}}
-        // TODO(aluno): remover este produto da lista ao tocar aqui (ex.: recebendo uma função via props que atualiza o estado da lista em ListaItens/App).
-      >
+      <TouchableOpacity onPress={tocarNaLixeira}>
         <Trash2 color={colors.textSecondary} strokeWidth={1} />
       </TouchableOpacity>
     </View>

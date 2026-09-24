@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
   title: {
     fontSize: colors.titulo,
     textAlign: "center",
-    color: colors.azul500,
+    color: colors.vermelho500,
     fontWeight: "bold",
   },
 });

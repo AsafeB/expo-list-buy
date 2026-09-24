@@ -6,39 +6,30 @@ import { ProdutoItem } from "../../interfaces/ProdutoItem";
 import ProdutoListaItem from "../ProdutoListaItem/ProdutoListaItem";
 import { colors } from "../colors";
 
-export const DATA: ProdutoItem[] = [
-  {
-    id: "1",
-    nome: "Arroz (5kg)",
-    comprado: true,
-  },
-  {
-    id: "2",
-    nome: "Feijão Preto (1kg)",
-    comprado: false,
-  },
-  {
-    id: "3",
-    nome: "Macarrão Espaguete",
-    comprado: true,
-  },
-  {
-    id: "4",
-    nome: "Óleo de Soja",
-    comprado: false,
-  },
-  {
-    id: "5",
-    nome: "Açúcar Refinado",
-    comprado: false,
-  },
-];
+interface Props {
+  produtos: ProdutoItem[];
+  aoAlternarComprado: (id: string) => void;
+  aoRemover: (id: string) => void;
+  aoLimparAba: (comprado: boolean) => void;
+}
 
-export default function ListaItens() {
+export default function ListaItens({
+  produtos,
+  aoAlternarComprado,
+  aoRemover,
+  aoLimparAba,
+}: Props) {
   const [active, setActive] = useState("presentes");
 
-  // TODO(aluno): usar este estado para guardar a lista real de produtos (iniciando a partir de DATA ou de dados persistidos em AsyncStorage) e passar funções de adicionar/remover/alternar-comprado para Form e ProdutoListaItem.
-  const [produtos, setProdutos] = useState<ProdutoItem[]>([]);
+  function produtoDeveAparecer(produto: ProdutoItem) {
+    if (active === "presentes") {
+      return produto.comprado === false;
+    } else {
+      return produto.comprado === true;
+    }
+  }
+
+  const produtosFiltrados = produtos.filter(produtoDeveAparecer);
 
   function alterarActiveParaPresentes() {
     setActive("presentes");
@@ -46,6 +37,14 @@ export default function ListaItens() {
 
   function alterarActiveParaComprados() {
     setActive("comprados");
+  }
+
+  function limparListaDaAbaAtual() {
+    if (active === "comprados") {
+      aoLimparAba(true);
+    } else {
+      aoLimparAba(false);
+    }
   }
 
   return (
@@ -86,20 +85,24 @@ export default function ListaItens() {
 
         <TouchableOpacity
           style={{ marginLeft: "auto" }}
-          onPress={() => {}}
-          // TODO(aluno): implementar a ação de "Limpar" (ex.: remover os itens marcados como comprados, atualizando o estado da lista).
+          onPress={limparListaDaAbaAtual}
         >
           <Text style={{ color: colors.textSecondary }}>Limpar</Text>
         </TouchableOpacity>
       </View>
 
       {/* Lista de itens */}
-      {/* TODO(aluno): filtrar DATA/produtos de acordo com "active" (produto.comprado === false para "presentes", === true para "comprados") antes de passar para a FlatList. */}
       <FlatList<ProdutoItem>
-        data={DATA}
+        data={produtosFiltrados}
         keyExtractor={(item) => item.id}
         showsVerticalScrollIndicator={false}
-        renderItem={(linha) => <ProdutoListaItem produto={linha.item} />}
+        renderItem={(linha) => (
+          <ProdutoListaItem
+            produto={linha.item}
+            aoAlternarComprado={aoAlternarComprado}
+            aoRemover={aoRemover}
+          />
+        )}
       />
     </View>
   );

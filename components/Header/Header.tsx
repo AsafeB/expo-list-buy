@@ -8,7 +8,7 @@ export default function Header() {
     <View style={styles.container}>
       <ShoppingCart
         size={colors.titulo}
-        color={colors.azul500}
+        color={colors.vermelho500}
         strokeWidth={3}
       />
       <Text style={styles.title}>comprar</Text>

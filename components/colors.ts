@@ -1,10 +1,10 @@
 export const colors = {
-  azul500: "#007bff",
+    azul500: "#2563eb",
   titulo: 22,
-  background: "#bcbec8",
+  background: "#f8fafc",
   surface: "#ffffff",
-  textPrimary: "#1a1a1a",
-  textSecondary: "#777777",
-  border: "#cccccc",
-  danger: "#dc3545",
+  textPrimary: "#0f172a",
+  textSecondary: "#64748b",
+  border: "#e2e8f0",
+  danger: "#ef4444",
 };
